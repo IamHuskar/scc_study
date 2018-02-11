@@ -2,6 +2,9 @@
 
 #include "scc.h"
 
+
+SLOG_TOFILE_LEVEL_INIT("scc.log.txt", splog::LOGL_DEBUG)
+
 FILE *fin = NULL;				// 源文件指针
 char *filename;					// 源文件名称
 DynArray src_files;				// 源文件数组
@@ -172,6 +175,7 @@ char *get_file_ext(char *fname)
  **********************************************************/
 void compile(char *fname)
 {
+	SLOG_DEBUG("try to compile %s", filename);
     fin = fopen(fname,"rb");
 	if(!fin)
 		printf("cannot open SC source file");
@@ -199,7 +203,7 @@ void main(int argc, char ** argv)
 
 	for (i = 0; i < src_files.count; i++)
 	{
-		filename = src_files.data[i];
+		filename = (char*)src_files.data[i];
 		ext = get_file_ext(filename);
 
 		if (!strcmp(ext, "c"))

@@ -15,45 +15,51 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dynarray.c">
+    <ClCompile Include="symbol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dynstring.c">
+    <ClCompile Include="stack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="error.c">
+    <ClCompile Include="scc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="gencode.c">
+    <ClCompile Include="outpe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="grammar.c">
+    <ClCompile Include="outcoff.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lex.c">
+    <ClCompile Include="operand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="operand.c">
+    <ClCompile Include="lex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="outcoff.c">
+    <ClCompile Include="grammar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="outpe.c">
+    <ClCompile Include="gencode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scc.c">
+    <ClCompile Include="error.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stack.c">
+    <ClCompile Include="dynstring.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="symbol.c">
+    <ClCompile Include="dynarray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="slog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="slog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

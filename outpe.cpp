@@ -183,22 +183,22 @@ int load_obj_file(char *fname)
 	for(i = 0; i < nsec_obj; i++)
 	{
 		
-		if(!strcmp(secs[i]->sh.Name,".symtab"))
+		if(!strcmp((const char*)secs[i]->sh.Name,".symtab"))
 		{
-			cfsyms = mallocz(secs[i]->sh.SizeOfRawData);
+			cfsyms =(CoffSym*) mallocz(secs[i]->sh.SizeOfRawData);
 			fseek(fobj, secs[i]->sh.PointerToRawData, SEEK_SET);
 			fread(cfsyms,1,secs[i]->sh.SizeOfRawData,fobj);
 			nsym = secs[i]->sh.SizeOfRawData / sizeof(CoffSym);
 			continue;
 		}
-		if(!strcmp(secs[i]->sh.Name,".strtab"))
+		if (!strcmp((const char*)secs[i]->sh.Name, ".strtab"))
 		{
-			strs = mallocz(secs[i]->sh.SizeOfRawData);
+			strs = (char*)mallocz(secs[i]->sh.SizeOfRawData);
 			fseek(fobj, secs[i]->sh.PointerToRawData, SEEK_SET);
 			fread(strs,1,secs[i]->sh.SizeOfRawData,fobj);
 			continue;
 		}
-		if(!strcmp(secs[i]->sh.Name,".dynsym") || !strcmp(secs[i]->sh.Name,".dynstr"))
+		if (!strcmp((const char*)secs[i]->sh.Name, ".dynsym") || !strcmp((const char*)secs[i]->sh.Name, ".dynstr"))
 			continue;
 
 		
@@ -209,7 +209,7 @@ int load_obj_file(char *fname)
 		fread(ptr,1,secs[i]->sh.SizeOfRawData,fobj);		
 	}
 
-	old_to_new_syms = mallocz(sizeof(int)*nsym);
+	old_to_new_syms = (int*)mallocz(sizeof(int)*nsym);
 	for(i = 1; i < nsym; i++)
 	{
 		cfsym = &cfsyms[i];
@@ -280,7 +280,7 @@ char *get_dllname(char *libfile)
 	}
 
 	n2 = strlen(libname);
-	dllname = mallocz(sizeof(char) * n2);
+	dllname = (char*)mallocz(sizeof(char) * n2);
 	memcpy(dllname,libname,n2-4);
 	memcpy(dllname+n2-4,"dll",3);
 	return dllname;
@@ -365,7 +365,7 @@ void add_runtime_libs()
 
 	for(i = 0; i < array_lib.count; i++)
 	{
-		pe_load_lib_file(array_lib.data[i]);
+		pe_load_lib_file((char*)array_lib.data[i]);
 	}
 }
 
@@ -399,11 +399,11 @@ struct ImportSym *pe_add_import(struct PEInfo *pe, int sym_index, char *name)
 
     i = dynarray_search (&pe->imps, dll_index);
     if (-1 != i) {
-        p = pe->imps.data[i];
+        p = (ImportInfo*)pe->imps.data[i];
     }
 	else
 	{
-		p = mallocz(sizeof *p);
+		p = (ImportInfo*)mallocz(sizeof *p);
 		dynarray_init(&p->imp_syms,8);
 		p->dll_index = dll_index;
 		dynarray_add(&pe->imps, p);
@@ -416,7 +416,7 @@ struct ImportSym *pe_add_import(struct PEInfo *pe, int sym_index, char *name)
 	}
 	else
 	{		
-		s = mallocz(sizeof(struct ImportSym) + strlen(name));
+		s = (ImportSym*)mallocz(sizeof(struct ImportSym) + strlen(name));
 		dynarray_add(&p->imp_syms, s);
 		strcpy((char*)&s->imp_sym.Name,name);
 		return s;
@@ -494,7 +494,7 @@ int put_import_str(Section *sec, char *sym)
     char *ptr;
     len = strlen(sym) + 1;
     offset = sec->data_offset;
-    ptr = section_ptr_add(sec, len);
+    ptr = (char*)section_ptr_add(sec, len);
     memcpy(ptr, sym, len);
     return offset;
 }
@@ -527,8 +527,8 @@ void pe_build_imports(struct PEInfo *pe)
     for (i = 0; i < pe->imps.count; ++i) 
 	{
         int k, n, v;
-        struct ImportInfo *p = pe->imps.data[i];
-		char *name = array_dll.data[p->dll_index-1];   
+		struct ImportInfo *p = (ImportInfo*)pe->imps.data[i];
+		char *name = (char*)array_dll.data[p->dll_index-1];   
 
         /* 写入dll名称 */
         v = put_import_str(pe->thunk, name);
@@ -697,20 +697,20 @@ int pe_write(struct PEInfo *pe)
     for (i = 0; i < pe->sec_size; ++i)
 	{
 		Section *sec = pe->secs[i];
-        char *sh_name = sec->sh.Name; 
+        char *sh_name = (char*)sec->sh.Name; 
         unsigned long addr = sec->sh.VirtualAddress - nt_header.OptionalHeader.ImageBase; 
         unsigned long size = sec->data_offset; 
         IMAGE_SECTION_HEADER *psh = &sec->sh;
 
 
-        if(!strcmp(sec->sh.Name,".text"))
+        if(!strcmp((const char*)sec->sh.Name,".text"))
 		{
            nt_header.OptionalHeader.BaseOfCode = addr;
            nt_header.OptionalHeader.AddressOfEntryPoint = addr + pe->entry_addr;  
 		}
-		else if(!strcmp(sec->sh.Name,".data"))
+		else if (!strcmp((const char*)sec->sh.Name, ".data"))
            nt_header.OptionalHeader.BaseOfData = addr;
-		else if(!strcmp(sec->sh.Name,".idata"))
+		else if (!strcmp((const char*)sec->sh.Name, ".idata"))
 		{
 			if (pe->imp_size)
 			{
@@ -732,7 +732,7 @@ int pe_write(struct PEInfo *pe)
         if (sec->data_offset) 
 		{			
             psh->PointerToRawData = r = file_offset;
-			if(!strcmp(sec->sh.Name,".bss")) 
+			if (!strcmp((const char*)sec->sh.Name, ".bss"))
 			{
 				sec->sh.SizeOfRawData = 0;
 				continue;

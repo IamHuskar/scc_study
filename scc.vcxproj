@@ -123,21 +123,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="dynarray.c" />
-    <ClCompile Include="dynstring.c" />
-    <ClCompile Include="error.c" />
-    <ClCompile Include="gencode.c" />
-    <ClCompile Include="grammar.c" />
-    <ClCompile Include="lex.c" />
-    <ClCompile Include="operand.c" />
-    <ClCompile Include="outcoff.c" />
-    <ClCompile Include="outpe.c" />
-    <ClCompile Include="scc.c" />
-    <ClCompile Include="stack.c" />
-    <ClCompile Include="symbol.c" />
+    <ClCompile Include="dynarray.cpp" />
+    <ClCompile Include="dynstring.cpp" />
+    <ClCompile Include="error.cpp" />
+    <ClCompile Include="gencode.cpp" />
+    <ClCompile Include="grammar.cpp" />
+    <ClCompile Include="lex.cpp" />
+    <ClCompile Include="operand.cpp" />
+    <ClCompile Include="outcoff.cpp" />
+    <ClCompile Include="outpe.cpp" />
+    <ClCompile Include="scc.cpp" />
+    <ClCompile Include="slog.cpp" />
+    <ClCompile Include="stack.cpp" />
+    <ClCompile Include="symbol.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scc.h" />
+    <ClInclude Include="slog.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
